@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'https://ubs-riacho-estado.onrender.com'
+  apiUrl: 'http://localhost:3000'
 };

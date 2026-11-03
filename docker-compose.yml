@@ -1,0 +1,87 @@
+services:
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=ubs-sagrada-cluster
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - es01data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - ubs-elastic
+
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    container_name: es02
+    environment:
+      - node.name=es02
+      - cluster.name=ubs-sagrada-cluster
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - es02data:/usr/share/elasticsearch/data
+    ports:
+      - "9201:9200"
+    networks:
+      - ubs-elastic
+
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    container_name: es03
+    environment:
+      - node.name=es03
+      - cluster.name=ubs-sagrada-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - es03data:/usr/share/elasticsearch/data
+    ports:
+      - "9202:9200"
+    networks:
+      - ubs-elastic
+
+  backend:
+    build: .
+    container_name: backend
+    env_file: .env
+    environment:
+      - ES_URL=http://es01:9200
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - es01
+      - es02
+      - es03
+    networks:
+      - ubs-elastic
+
+  frontend:
+    build:
+      context: ./ubs-frontend
+    container_name: frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - ubs-elastic
+
+volumes:
+  es01data:
+  es02data:
+  es03data:
+
+networks:
+  ubs-elastic:
+    driver: bridge
