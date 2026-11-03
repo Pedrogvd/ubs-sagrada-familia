@@ -1,0 +1,136 @@
+<div class="settings-page">
+  <h1>Usuários</h1>
+  <p class="subtitle">Gerencie pacientes e profissionais cadastrados no sistema.</p>
+
+  <div class="tabs">
+    <button type="button" [class.active]="activeTab() === 'patients'" (click)="setTab('patients')">Pacientes</button>
+    <button type="button" [class.active]="activeTab() === 'professionals'" (click)="setTab('professionals')">Profissionais</button>
+  </div>
+
+  @if (activeTab() === 'patients') {
+    <a routerLink="/patients/new" class="btn-new">+ Novo paciente</a>
+
+    <div class="filters">
+      <input type="text" placeholder="Buscar por nome..." [value]="patientSearch()" (input)="onPatientSearchChange($event)" class="filter-input" />
+    </div>
+
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>Prioridade</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (patient of pagedPatients(); track patient.id) {
+        <tr>
+          <td data-label="Nome" class="cell-title">{{ patient.name }}</td>
+          <td data-label="CPF">{{ patient.cpf }}</td>
+          <td data-label="Prioridade"><span class="badge badge--{{ patient.priority }}">{{ priorityLabel(patient.priority) }}</span></td>
+          <td data-label="Status">
+            <span class="badge" [class.badge--active]="patient.active" [class.badge--inactive]="!patient.active">
+              {{ patient.active ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+          <td data-label="Ações" class="actions">
+            <a [routerLink]="['/patients/edit', patient.id]" class="btn-link action-chip">Editar dados do paciente</a>
+            <div class="action-grid">
+              <a [routerLink]="['/visits/new', patient.id]" class="btn-link action-chip action-chip--visit">Registrar visita</a>
+              <a [routerLink]="['/visits/history', patient.id]" class="btn-link action-chip action-chip--visit">Histórico de visitas</a>
+              <a [routerLink]="['/ivcf/new', patient.id]" class="btn-link action-chip action-chip--primary">Editar IVCF-20</a>
+              <a [routerLink]="['/ivcf/history', patient.id]" class="btn-link action-chip action-chip--primary">Histórico IVCF</a>
+            </div>
+            <button type="button" class="btn-link action-chip action-chip--danger" (click)="askDeletePatient(patient)">Excluir paciente</button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="5">Nenhum paciente encontrado.</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    </div>
+
+    @if (filteredPatients().length > 0) {
+    <app-pagination [currentPage]="patientsPage()" [totalPages]="patientsTotalPages()" (pageChange)="patientsPage.set($event)" />
+    }
+  }
+
+  @if (activeTab() === 'professionals') {
+    <a routerLink="/professionals/new" class="btn-new">+ Novo profissional</a>
+
+    <div class="filters">
+      <input type="text" placeholder="Buscar por nome..." [value]="professionalSearch()" (input)="onProfessionalSearchChange($event)" class="filter-input" />
+    </div>
+
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Perfil</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (professional of pagedProfessionals(); track professional.id) {
+        <tr>
+          <td data-label="Nome" class="cell-title">{{ professional.name }}</td>
+          <td data-label="Email">{{ professional.email }}</td>
+          <td data-label="Perfil"><span class="badge badge--{{ professional.role }}">{{ roleLabel(professional.role) }}</span></td>
+          <td data-label="Status">
+            <span class="badge" [class.badge--active]="professional.active" [class.badge--inactive]="!professional.active">
+              {{ professional.active ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+          <td data-label="Ações" class="actions">
+            <a [routerLink]="['/professionals/edit', professional.id]" class="btn-link">Editar</a>
+            @if (isSelf(professional)) {
+              <span class="self-note">Você</span>
+            }
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="5">Nenhum profissional cadastrado.</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    </div>
+
+    @if (filteredProfessionals().length > 0) {
+    <app-pagination [currentPage]="professionalsPage()" [totalPages]="professionalsTotalPages()" (pageChange)="professionalsPage.set($event)" />
+    }
+  }
+
+  @if (patientToDelete(); as patient) {
+    <div class="modal-overlay" (click)="cancelDeletePatient()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <h2>Excluir paciente</h2>
+        <p>
+          Excluir o paciente <strong>"{{ patient.name }}"</strong>? Isso também apaga o histórico de visitas e de
+          avaliações IVCF-20 dele. Essa ação não pode ser desfeita.
+        </p>
+
+        @if (patientDeleteError()) {
+          <p class="error">{{ patientDeleteError() }}</p>
+        }
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" [disabled]="deletingPatient()" (click)="cancelDeletePatient()">Cancelar</button>
+          <button type="button" class="btn-danger-solid" [disabled]="deletingPatient()" (click)="confirmDeletePatient()">
+            {{ deletingPatient() ? 'Excluindo...' : 'Excluir paciente' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

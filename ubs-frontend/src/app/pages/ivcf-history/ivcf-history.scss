@@ -1,0 +1,176 @@
+.history-page {
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+h1 {
+  font-size: 1.75rem;
+  color: #1a2b3c;
+  margin-bottom: 0.5rem;
+}
+
+.patient-name {
+  color: #64748b;
+  margin-bottom: 1.25rem;
+}
+
+.btn-new {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  background: #0f9d8f;
+  color: white;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.btn-new:hover {
+  background: #0c8074;
+}
+
+.empty-state {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.assessment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.assessment-card {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.assessment-card__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.assessment-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.assessment-date {
+  margin: 0;
+  font-weight: 700;
+  color: #1a2b3c;
+}
+
+.assessment-professional {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.assessment-card__score {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.expand-icon {
+  font-size: 1.25rem;
+  color: #94a3b8;
+  width: 1.25rem;
+  text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border-radius: 62.4375rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge--baixa {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge--moderada {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge--alta {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.assessment-details {
+  border-top: 0.0625rem solid #e2e8f0;
+  padding: 0.5rem 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.answer-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.45rem 0;
+  border-bottom: 0.0625rem solid #f1f5f9;
+  font-size: 0.85rem;
+}
+
+.answer-row:last-child {
+  border-bottom: none;
+}
+
+.answer-number {
+  color: #94a3b8;
+  font-weight: 700;
+  width: 1.25rem;
+  flex-shrink: 0;
+}
+
+.answer-text {
+  flex: 1;
+  color: #334155;
+}
+
+.answer-value {
+  font-weight: 700;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.answer-value--yes {
+  color: #dc2626;
+}
+
+@media (max-width: 30rem) {
+  .assessment-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .assessment-card__score {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

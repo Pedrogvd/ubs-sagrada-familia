@@ -1,0 +1,101 @@
+<div class="reports-page">
+  <h1>Relatórios mensais</h1>
+  <p class="subtitle">Resumo de visitas, atendimentos e novos pacientes por mês.</p>
+
+  <div class="month-toolbar">
+    <button type="button" (click)="previousMonth()">&larr;</button>
+    <span class="month-label">{{ monthLabel() }}</span>
+    <button type="button" (click)="nextMonth()">&rarr;</button>
+    <button type="button" class="btn-current-month" (click)="goToCurrentMonth()">Mês atual</button>
+  </div>
+
+  @if (loading()) {
+    <p class="loading">Carregando...</p>
+  } @else if (report(); as data) {
+    <section class="report-section">
+      <h2>Visitas no mês</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <span class="card-value">{{ data.visitOutcomes.total }}</span>
+          <span class="card-label">Total de visitas</span>
+        </div>
+        <div class="card card--success">
+          <span class="card-value">{{ data.visitOutcomes.completed }}</span>
+          <span class="card-label">Realizadas</span>
+        </div>
+        <div class="card card--warning">
+          <span class="card-value">{{ data.visitOutcomes.patient_absent }}</span>
+          <span class="card-label">Paciente ausente</span>
+        </div>
+        <div class="card card--warning">
+          <span class="card-value">{{ data.visitOutcomes.refused }}</span>
+          <span class="card-label">Recusou</span>
+        </div>
+        <div class="card card--success">
+          <span class="card-value">{{ data.visitOutcomes.successRate }}%</span>
+          <span class="card-label">Taxa de sucesso</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="report-section">
+      <h2>Ranking de visitas por ACS</h2>
+      @if (data.acsRanking.length > 0) {
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ACS</th>
+              <th>Visitas</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of data.acsRanking; track item.professionalId; let i = $index) {
+            <tr>
+              <td>{{ i + 1 }}º</td>
+              <td>{{ item.professionalName }}</td>
+              <td>{{ item.visitsCount }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      } @else {
+        <p class="empty-state">Nenhuma visita registrada nesse mês.</p>
+      }
+    </section>
+
+    <section class="report-section">
+      <h2>Atendimentos por condição crônica</h2>
+      @if (data.conditionBreakdown.length > 0) {
+        <table>
+          <thead>
+            <tr>
+              <th>Condição</th>
+              <th>Pacientes atendidos</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of data.conditionBreakdown; track item.condition) {
+            <tr>
+              <td>{{ conditionLabel(item.condition) }}</td>
+              <td>{{ item.patientsVisited }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      } @else {
+        <p class="empty-state">Nenhum atendimento com condição registrada nesse mês.</p>
+      }
+    </section>
+
+    <section class="report-section">
+      <h2>Novos pacientes</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <span class="card-value">{{ data.newPatientsCount }}</span>
+          <span class="card-label">Pacientes cadastrados no mês</span>
+        </div>
+      </div>
+    </section>
+  }
+</div>

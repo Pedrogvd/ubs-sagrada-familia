@@ -1,0 +1,108 @@
+.form-page {
+  width: 100%;
+  max-width: 37.5rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+h1 {
+  font-size: 1.75rem;
+  color: #1a2b3c;
+  margin-bottom: 1.5rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05);
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+input,
+select {
+  padding: 0.6rem 0.75rem;
+  border: 0.0625rem solid #cbd5e1;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #0f9d8f;
+}
+
+button {
+  margin-top: 0.5rem;
+  padding: 0.7rem;
+  background: #0f9d8f;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: #0c8074;
+}
+
+button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.required {
+  color: #dc2626;
+  margin-left: 0.125rem;
+}
+
+.conditions-fieldset {
+  border: 0.0625rem solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.conditions-fieldset legend {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+  padding: 0 0.25rem;
+}
+
+.checkbox-label {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+}
+
+.field-error {
+  color: #dc2626;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.acs-note {
+  color: #64748b;
+  font-size: 0.85rem;
+  margin: -0.5rem 0 0.5rem;
+}

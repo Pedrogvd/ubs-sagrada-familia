@@ -1,0 +1,206 @@
+<div class="form-page">
+  <h1>Editar IVCF-20</h1>
+
+  @if (patient(); as p) {
+  <p class="patient-name">Paciente: {{ p.name }}</p>
+  }
+
+  @if (result(); as r) {
+  <div class="result-panel result-panel--{{ r.classification }}">
+    <p class="result-score">{{ r.totalScore }} <span>/ 40 pontos</span></p>
+    <p class="result-classification">{{ classificationLabel(r.classification) }}</p>
+    <div class="result-actions">
+      <a [routerLink]="['/ivcf/history', patientId]" class="btn-secondary">Ver histórico</a>
+      <a routerLink="/patients" class="btn-secondary">Voltar pra pacientes</a>
+    </div>
+  </div>
+  } @else {
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+    }
+
+    <label>
+      <span class="field-label">Data da avaliação <span class="required">*</span></span>
+      <input type="date" formControlName="assessedAt" [attr.max]="today" />
+    </label>
+
+    <div class="section">
+      <h2 class="section-title">Idade</h2>
+      <label>
+        <span class="field-label">1. Qual é a sua idade?</span>
+        <select formControlName="age">
+          <option value="60_74">60 a 74 anos</option>
+          <option value="75_84">75 a 84 anos</option>
+          <option value="85_plus">≥ 85 anos</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Percepção da saúde</h2>
+      <label>
+        <span class="field-label">2. Em geral, comparando com outras pessoas de sua idade, você diria que sua saúde é:</span>
+        <select formControlName="healthPerception">
+          <option value="good">Excelente, muito boa ou boa</option>
+          <option value="regular_bad">Regular ou ruim</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="section" formGroupName="avdInstrumental">
+      <h2 class="section-title">AVD instrumental</h2>
+      <p class="section-hint">Pontuação máxima deste item é 4 pontos, mesmo que o idoso tenha respondido "Sim" para todas as três questões.</p>
+
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="stoppedShopping" />
+        3. Por causa da sua saúde ou condição física, deixou de fazer compras?
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="stoppedManagingMoney" />
+        4. Por causa da sua saúde ou condição física, deixou de controlar seu dinheiro, gasto ou pagar as contas de sua casa?
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="stoppedHousework" />
+        5. Por causa da sua saúde ou condição física, deixou de realizar pequenos trabalhos domésticos, como lavar louça, arrumar a casa ou fazer limpeza leve?
+      </label>
+    </div>
+
+    <div class="section" formGroupName="avdBasica">
+      <h2 class="section-title">AVD básica</h2>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="stoppedBathingAlone" />
+        6. Por causa da sua saúde ou condição física, deixou de tomar banho sozinho?
+      </label>
+    </div>
+
+    <div class="section" formGroupName="cognition">
+      <h2 class="section-title">Cognição</h2>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="familyNoticedForgetfulness" />
+        7. Algum familiar ou amigo falou que está ficando esquecido?
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="forgetfulnessWorsening" />
+        8. Este esquecimento está piorando nos últimos meses?
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="forgetfulnessImpairsActivity" />
+        9. Este esquecimento está impedindo a realização de alguma atividade do cotidiano?
+      </label>
+    </div>
+
+    <div class="section" formGroupName="humor">
+      <h2 class="section-title">Humor</h2>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="discouragementSadnessHopelessness" />
+        10. No último mês, ficou com desânimo, tristeza ou desesperança?
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="lossOfInterestOrPleasure" />
+        11. No último mês, perdeu o interesse ou prazer em atividades anteriormente prazerosas?
+      </label>
+    </div>
+
+    <div class="section" formGroupName="mobility">
+      <h2 class="section-title">Mobilidade</h2>
+
+      <div class="subsection" formGroupName="reachGrip">
+        <h3 class="subsection-title">Alcance, preensão e pinça</h3>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="cannotRaiseArmsAboveShoulder" />
+          12. É incapaz de elevar os braços acima do nível do ombro?
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="cannotHandleSmallObjects" />
+          13. É incapaz de manusear ou segurar pequenos objetos?
+        </label>
+      </div>
+
+      <div class="subsection" formGroupName="aerobicMuscular">
+        <h3 class="subsection-title">Capacidade aeróbica e/ou muscular</h3>
+        <p class="section-hint">Pontuação máxima deste item é 2 pontos, mesmo que o idoso tenha respondido "Sim" para todas as quatro questões abaixo.</p>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="hasCondition" />
+          14. Tem alguma das condições abaixo relacionadas?
+        </label>
+        <div class="sub-checklist">
+          <label class="checkbox-label checkbox-label--sub">
+            <input type="checkbox" formControlName="unintentionalWeightLoss" />
+            Perda de peso não intencional de 4,5kg ou 5% do peso corporal no último ano ou 6kg nos últimos 6 meses ou 3kg no último mês
+          </label>
+          <label class="checkbox-label checkbox-label--sub">
+            <input type="checkbox" formControlName="lowBmi" />
+            Índice de Massa Corporal (IMC) menor que 22kg/m²
+          </label>
+          <label class="checkbox-label checkbox-label--sub">
+            <input type="checkbox" formControlName="smallCalfCircumference" />
+            Circunferência (perímetro) da panturrilha &lt; 31cm
+          </label>
+          <label class="checkbox-label checkbox-label--sub">
+            <input type="checkbox" formControlName="slowGaitSpeed" />
+            Tempo gasto no teste de velocidade da marcha (4m) &gt; 5 segundos
+          </label>
+        </div>
+      </div>
+
+      <div class="subsection" formGroupName="gait">
+        <h3 class="subsection-title">Marcha</h3>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="difficultyImpairsActivity" />
+          15. Tem dificuldade para caminhar capaz de impedir a realização de alguma atividade do cotidiano?
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="twoOrMoreFallsLastYear" />
+          16. Teve duas ou mais quedas no último ano?
+        </label>
+      </div>
+
+      <div class="subsection" formGroupName="continence">
+        <h3 class="subsection-title">Continência esfincteriana</h3>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="involuntaryLossOfUrineOrFeces" />
+          17. Perde urina ou fezes, sem querer, em algum momento?
+        </label>
+      </div>
+    </div>
+
+    <div class="section" formGroupName="communication">
+      <h2 class="section-title">Comunicação</h2>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="visionImpairsActivity" />
+        18. Tem problemas de visão capazes de impedir a realização de alguma atividade do cotidiano? (É permitido o uso de óculos ou lentes de contato.)
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="hearingImpairsActivity" />
+        19. Tem problemas de audição capazes de impedir a realização de alguma atividade do cotidiano? (É permitido o uso de aparelhos de audição.)
+      </label>
+    </div>
+
+    <div class="section" formGroupName="multipleComorbidity">
+      <h2 class="section-title">Comorbidade múltipla</h2>
+      <p class="section-hint">Pontuação máxima desta questão é 4 pontos, mesmo que o idoso tenha respondido "Sim" para todas as três questões abaixo.</p>
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="hasCondition" />
+        20. Tem alguma das condições abaixo relacionadas?
+      </label>
+      <div class="sub-checklist">
+        <label class="checkbox-label checkbox-label--sub">
+          <input type="checkbox" formControlName="fiveOrMoreChronicDiseases" />
+          Cinco ou mais doenças crônicas
+        </label>
+        <label class="checkbox-label checkbox-label--sub">
+          <input type="checkbox" formControlName="fiveOrMoreDailyMedications" />
+          Uso regular de cinco ou mais medicamentos diferentes, todo dia
+        </label>
+        <label class="checkbox-label checkbox-label--sub">
+          <input type="checkbox" formControlName="recentHospitalization" />
+          Internação recente, nos últimos seis meses
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid">Salvar avaliação</button>
+  </form>
+  }
+</div>

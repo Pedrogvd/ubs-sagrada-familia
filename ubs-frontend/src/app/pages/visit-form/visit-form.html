@@ -1,0 +1,62 @@
+<div class="form-page">
+  <h1>Registrar visita</h1>
+
+  @if (patient(); as p) {
+    <p class="patient-name">Paciente: {{ p.name }}</p>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label>
+      <span class="field-label">Data e hora da visita <span class="required">*</span></span>
+      <input type="datetime-local" formControlName="visitDate" [attr.max]="now" />
+      @if (visitDateError(); as error) {
+        <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">Visita realizada <span class="required">*</span></span>
+      <select formControlName="outcome">
+        <option value="completed">Realizada</option>
+        <option value="patient_absent">Paciente ausente</option>
+        <option value="refused">Recusou a visita</option>
+      </select>
+    </label>
+
+    @if (form.get('outcome')?.value === 'completed') {
+      <label>
+        <span class="field-label">Pressão arterial</span>
+        <input type="text" placeholder="ex: 120/80" formControlName="bloodPressure" />
+      </label>
+
+      <label>
+        <span class="field-label">Peso (kg)</span>
+        <input type="number" step="0.1" min="0" formControlName="weightKg" />
+      </label>
+
+      <label>
+        <span class="field-label">Glicemia (mg/dL)</span>
+        <input type="number" step="1" min="0" formControlName="bloodGlucoseMgDl" />
+      </label>
+    }
+
+    <label class="checkbox-label">
+      <input type="checkbox" formControlName="needsReferral" />
+      Necessita encaminhamento
+    </label>
+
+    @if (form.get('needsReferral')?.value) {
+      <label>
+        <span class="field-label">Encaminhado para</span>
+        <input type="text" placeholder="ex: UBS especializada, Hospital" formControlName="referredTo" />
+      </label>
+    }
+
+    <label>
+      <span class="field-label">Observações</span>
+      <textarea formControlName="notes" rows="4"></textarea>
+    </label>
+
+    <button type="submit" [disabled]="form.invalid">Registrar visita</button>
+  </form>
+</div>

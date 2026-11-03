@@ -1,0 +1,53 @@
+<div class="calendar-page">
+  <h1>Agenda de visitas</h1>
+  <p class="subtitle">Visitas previstas (pelo alerta dos pacientes) e visitas já registradas, lado a lado por dia.</p>
+
+  <div class="calendar-toolbar">
+    <button type="button" (click)="previousMonth()">&larr;</button>
+    <span class="month-label">{{ monthLabel() }}</span>
+    <button type="button" (click)="nextMonth()">&rarr;</button>
+    <button type="button" class="btn-today" (click)="goToToday()">Hoje</button>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="dot dot--due"></span> Prevista</span>
+    <span class="legend-item"><span class="dot dot--completed"></span> Realizada</span>
+    <span class="legend-item"><span class="dot dot--missed"></span> Ausente/recusou</span>
+  </div>
+
+  <div class="calendar-grid">
+    @for (label of weekdayLabels; track label) {
+      <div class="weekday-label">{{ label }}</div>
+    }
+
+    @for (day of calendarDays(); track $index) {
+      @if (day) {
+        <div class="day-cell" [class.day-cell--past]="day.isPast" [class.day-cell--today]="day.isToday">
+          <div class="day-header">
+            <span class="day-number">{{ day.date.getDate() }}</span>
+            <span class="day-weekday">{{ weekdayLabels[day.date.getDay()] }}</span>
+          </div>
+
+          @for (patient of day.dueVisits; track patient.id) {
+            <a [routerLink]="['/visits/new', patient.id]" class="chip chip--due">{{ patient.name }}</a>
+          }
+
+          @for (item of day.completedVisits; track item.visit.id) {
+            <span
+              class="chip"
+              [class.chip--completed]="item.visit.outcome === 'completed'"
+              [class.chip--missed]="item.visit.outcome !== 'completed'"
+            >
+              @if (visitTimeLabel(item.visit.visitDate); as time) {
+                {{ time }} ·
+              }
+              {{ item.patientName }} · {{ outcomeLabel(item.visit.outcome) }}
+            </span>
+          }
+        </div>
+      } @else {
+        <div class="day-cell day-cell--blank"></div>
+      }
+    }
+  </div>
+</div>

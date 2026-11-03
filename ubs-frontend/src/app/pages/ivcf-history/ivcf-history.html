@@ -1,0 +1,42 @@
+<div class="history-page">
+  <h1>Histórico IVCF-20</h1>
+
+  @if (patient(); as p) {
+  <p class="patient-name">Paciente: {{ p.name }}</p>
+  }
+
+  @if (assessments().length === 0) {
+  <p class="empty-state">Nenhuma avaliação IVCF-20 registrada pra esse paciente ainda.</p>
+  } @else {
+  <div class="assessment-list">
+    @for (assessment of assessments(); track assessment.id) {
+    <div class="assessment-card">
+      <button type="button" class="assessment-card__header" (click)="toggleExpanded(assessment.id)">
+        <div class="assessment-card__info">
+          <p class="assessment-date">{{ assessment.assessedAt | date: 'dd/MM/yyyy' }}</p>
+          <p class="assessment-professional">Aplicado por {{ professionalName(assessment.professionalId) }}</p>
+        </div>
+        <div class="assessment-card__score">
+          <span class="badge badge--{{ assessment.classification }}">
+            {{ assessment.totalScore }} pontos · {{ classificationLabel(assessment.classification) }}
+          </span>
+          <span class="expand-icon">{{ expandedId() === assessment.id ? '−' : '+' }}</span>
+        </div>
+      </button>
+
+      @if (expandedId() === assessment.id) {
+      <div class="assessment-details">
+        @for (row of flattenAnswers(assessment.answers); track row.number) {
+        <div class="answer-row">
+          <span class="answer-number">{{ row.number }}</span>
+          <span class="answer-text">{{ row.text }}</span>
+          <span class="answer-value" [class.answer-value--yes]="row.value === 'Sim'">{{ row.value }}</span>
+        </div>
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+  }
+</div>

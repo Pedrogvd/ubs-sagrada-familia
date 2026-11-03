@@ -1,0 +1,23 @@
+# Dependências
+node_modules/
+
+# Build
+dist/
+
+# Variáveis de ambiente (segredos — nunca commitar)
+.env
+.env.local
+.env.*.local
+
+# Scripts de seed (contêm dados reais de pessoas — nome, CPF — nunca commitar)
+seed*.js
+seed*.ts
+
+# Logs
+npm-debug.log*
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
+logs/

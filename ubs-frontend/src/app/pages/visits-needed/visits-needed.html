@@ -1,0 +1,72 @@
+<div class="visits-needed-page">
+  <h1>Quem precisa ser visitado</h1>
+  <p class="subtitle">Pacientes ativos que nunca foram visitados e ainda não têm visita prevista na Agenda.</p>
+
+  <div class="filters">
+    <div class="filter-search">
+      <svg class="filter-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        type="text"
+        placeholder="Buscar por nome..."
+        [value]="searchTerm()"
+        (input)="onSearchChange($event)"
+        class="filter-input"
+      />
+    </div>
+
+    @if (isAdmin()) {
+      <select [value]="acsFilter()" (change)="onAcsFilterChange($event)">
+        <option value="all">Todos os ACS</option>
+        @for (professional of healthProfessionals(); track professional.id) {
+          <option [value]="professional.id">{{ professional.name }}</option>
+        }
+      </select>
+    }
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Prioridade</th>
+        <th>ACS responsável</th>
+        <th>Cadastrado em</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (patient of pagedPatients(); track patient.id) {
+      <tr>
+        <td data-label="Nome" class="cell-title">{{ patient.name }}</td>
+        <td data-label="Prioridade"><span class="badge badge--{{ patient.priority }}">{{ priorityLabel(patient.priority) }}</span></td>
+        <td data-label="ACS responsável">{{ acsName(patient.acsResponsavelId) }}</td>
+        <td data-label="Cadastrado em">{{ patient.createdAt | date:'dd/MM/yyyy' }}</td>
+        <td data-label="Ações" class="actions">
+          <a [routerLink]="['/visits/new', patient.id]" class="btn-link">Registrar visita</a>
+        </td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="5">
+          @if (patientsNeedingVisit().length === 0) {
+            Todo mundo já tem visita prevista na Agenda.
+          } @else {
+            Nenhum paciente encontrado com esses filtros.
+          }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+
+  @if (filteredPatients().length > 0) {
+    <app-pagination
+      [currentPage]="currentPage()"
+      [totalPages]="totalPages()"
+      (pageChange)="currentPage.set($event)"
+    />
+  }
+</div>

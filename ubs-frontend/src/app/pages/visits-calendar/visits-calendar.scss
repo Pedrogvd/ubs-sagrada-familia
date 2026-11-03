@@ -1,0 +1,220 @@
+.calendar-page {
+  width: 100%;
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+h1 {
+  font-size: 1.75rem;
+  color: #1a2b3c;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.calendar-toolbar button {
+  padding: 0.4rem 0.9rem;
+  border: 0.0625rem solid #cbd5e1;
+  background: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.calendar-toolbar button:hover {
+  background: #f1f5f9;
+}
+
+.month-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a2b3c;
+  min-width: 10rem;
+  text-align: center;
+}
+
+.btn-today {
+  margin-left: auto;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: #334155;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot--due {
+  background: #0f9d8f;
+}
+
+.dot--completed {
+  background: #166534;
+}
+
+.dot--missed {
+  background: #c2410c;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.weekday-label {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  padding-bottom: 0.4rem;
+}
+
+.day-cell {
+  background: white;
+  border-radius: 0.5rem;
+  border: 0.0625rem solid #e2e8f0;
+  padding: 0.4rem;
+  min-height: 7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+
+.day-cell--blank {
+  background: transparent;
+  border: none;
+  min-height: 7rem;
+}
+
+.day-cell--past {
+  background: #eef1f5;
+}
+
+.day-cell--past .day-number {
+  color: #94a3b8;
+}
+
+.day-cell--today {
+  border-color: #0f9d8f;
+  border-width: 0.125rem;
+}
+
+.day-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.day-number {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.day-weekday {
+  display: none;
+}
+
+.chip {
+  display: block;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.3rem;
+  text-decoration: none;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip--due {
+  background: #e6f7f5;
+  color: #0c8074;
+  border: 0.0625rem dashed #0f9d8f;
+}
+
+.chip--completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.chip--missed {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+// a grade de 7 colunas não cabe no celular — vira uma lista vertical,
+// um cartão por dia, mostrando só os dias que têm algo marcado
+@media (max-width: 64rem) {
+  .calendar-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .weekday-label {
+    display: none;
+  }
+
+  .day-cell--blank {
+    display: none;
+  }
+
+  .day-cell:not(:has(.chip)) {
+    display: none;
+  }
+
+  .day-cell {
+    min-height: auto;
+    max-height: none;
+    overflow: visible;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .day-weekday {
+    display: inline;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+  }
+
+  .day-cell--today .day-weekday {
+    color: #0f9d8f;
+  }
+
+  .chip {
+    white-space: normal;
+  }
+}

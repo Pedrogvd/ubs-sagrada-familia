@@ -1,0 +1,110 @@
+<div class="form-page">
+  <h1>{{ isEditMode() ? 'Editar paciente' : 'Novo paciente' }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label>
+      <span class="field-label">Nome <span class="required">*</span></span>
+      <input type="text" formControlName="name" />
+      @if (getError('name'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">CPF <span class="required">*</span></span>
+      <input type="tel" inputmode="numeric" maxlength="14" formControlName="cpf" (input)="formatCpf($event)" />
+      @if (getError('cpf'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">CNS</span>
+      <input type="tel" inputmode="numeric" maxlength="15" formControlName="cns"
+        (input)="restrictToDigits('cns', $event)" />
+      @if (getError('cns'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">Endereço <span class="required">*</span></span>
+      <input type="text" formControlName="address" />
+      @if (getError('address'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">Telefone <span class="required">*</span></span>
+      <input type="tel" inputmode="numeric" maxlength="16" formControlName="phoneNumber"
+        (input)="formatPhone($event)" />
+      @if (getError('phoneNumber'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">Data de nascimento <span class="required">*</span></span>
+      <input type="date" formControlName="dateOfBirth" [attr.max]="today" />
+      @if (getError('dateOfBirth'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">Microárea</span>
+      <input type="text" formControlName="microarea" />
+    </label>
+
+    @if (isAdmin()) {
+    <label>
+      <span class="field-label">ACS responsável</span>
+      <select formControlName="acsResponsavelId">
+        <option value="">Nenhum</option>
+        @for (professional of activeHealthProfessionals(); track professional.id) {
+        <option [value]="professional.id">{{ professional.name }}</option>
+        }
+      </select>
+    </label>
+    } @else {
+    <p class="acs-note">{{ isEditMode() ? 'Você é o ACS responsável por este paciente.' : 'Este paciente ficará sob sua responsabilidade.' }}</p>
+    }
+    <label>
+      <span class="field-label">Prioridade <span class="required">*</span></span>
+      <select formControlName="priority">
+        <option value="high">Alta</option>
+        <option value="medium">Média</option>
+        <option value="low">Baixa</option>
+      </select>
+    </label>
+
+    <fieldset class="conditions-fieldset">
+      <legend>Condições</legend>
+      @for (condition of conditionOptions; track condition.value) {
+      <label class="checkbox-label">
+        <input type="checkbox" [value]="condition.value" [checked]="isConditionSelected(condition.value)"
+          (change)="toggleCondition(condition.value, $event)" />
+        {{ condition.label }}
+      </label>
+      }
+    </fieldset>
+
+    <label>
+      <span class="field-label">Periodicidade das visitas (dias) <span class="required">*</span></span>
+      <input type="number" formControlName="visitPeriodicityDays" />
+      @if (getError('visitPeriodicityDays'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    @if (isEditMode()) {
+    <label class="checkbox-label">
+      <input type="checkbox" formControlName="active" />
+      Paciente ativo
+    </label>
+    }
+
+    <button type="submit" [disabled]="form.invalid">{{ isEditMode() ? 'Salvar alterações' : 'Salvar paciente' }}</button>
+  </form>
+</div>

@@ -1,0 +1,118 @@
+<div class="form-page">
+  <h1>{{ isEditMode() ? 'Editar profissional' : 'Novo profissional' }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label>
+      <span class="field-label">Nome <span class="required">*</span></span>
+      <input type="text" formControlName="name" />
+      @if (getError('name'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">CPF <span class="required">*</span></span>
+      <input type="tel" inputmode="numeric" maxlength="14" formControlName="cpf" (input)="formatCpf($event)" />
+      @if (getError('cpf'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">Endereço <span class="required">*</span></span>
+      <input type="text" formControlName="address" />
+      @if (getError('address'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">Telefone <span class="required">*</span></span>
+      <input type="tel" inputmode="numeric" maxlength="16" formControlName="phoneNumber"
+        (input)="formatPhone($event)" />
+      @if (getError('phoneNumber'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    <label>
+      <span class="field-label">Email <span class="required">*</span></span>
+      <input type="email" formControlName="email" />
+      @if (getError('email'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+
+    @if (!isEditMode()) {
+    <label>
+      <span class="field-label">Senha <span class="required">*</span></span>
+      <input type="password" formControlName="password" />
+      @if (getError('password'); as error) {
+      <span class="field-error">{{ error }}</span>
+      }
+    </label>
+    }
+
+    @if (isEditMode() && professional(); as prof) {
+    <div class="account-panel">
+      <p class="account-panel__title">Acesso ao sistema</p>
+
+      @if (isSelf()) {
+      <div class="account-panel__row">
+        <span class="field-label">Perfil</span>
+        <span class="badge badge--{{ prof.role }}">{{ roleLabel(prof.role) }}</span>
+      </div>
+      <div class="account-panel__row">
+        <span class="field-label">Status</span>
+        <span class="badge" [class.badge--active]="prof.active" [class.badge--inactive]="!prof.active">
+          {{ prof.active ? 'Ativo' : 'Inativo' }}
+        </span>
+      </div>
+      <p class="self-note">Você não pode alterar seu próprio perfil ou status.</p>
+      } @else {
+      <div class="toggle-row">
+        <div class="toggle-row__text">
+          <span class="toggle-row__label">Acesso de administrador</span>
+          <span class="toggle-row__hint">Permite gerenciar pacientes e profissionais de todos os ACS</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" [checked]="prof.role === 'admin'" (change)="toggleRole()" />
+          <span class="switch__track"></span>
+        </label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-row__text">
+          <span class="toggle-row__label">Conta ativa</span>
+          <span class="toggle-row__hint">Desativada, a pessoa não consegue mais fazer login</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" [checked]="prof.active" (change)="toggleActive()" />
+          <span class="switch__track"></span>
+        </label>
+      </div>
+
+      <div class="reset-password-row">
+        <div class="toggle-row__text">
+          <span class="toggle-row__label">Senha de acesso</span>
+          <span class="toggle-row__hint">Gera uma senha temporária nova pra essa pessoa</span>
+        </div>
+        <button type="button" class="btn-reset-password" (click)="resetPassword()">Resetar senha</button>
+      </div>
+
+      @if (resetPasswordResult(); as tempPassword) {
+      <div class="reset-password-result">
+        <p>Nova senha temporária: <strong>{{ tempPassword }}</strong></p>
+        <p class="reset-password-note">Repasse essa senha pro profissional. Ela não aparece de novo depois que você sair daqui.</p>
+      </div>
+      }
+
+      @if (resetPasswordError()) {
+      <span class="field-error">{{ resetPasswordError() }}</span>
+      }
+      }
+    </div>
+    }
+
+    <button type="submit" [disabled]="form.invalid">{{ isEditMode() ? 'Salvar alterações' : 'Salvar profissional' }}</button>
+  </form>
+</div>

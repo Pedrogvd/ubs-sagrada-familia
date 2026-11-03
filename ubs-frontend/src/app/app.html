@@ -1,0 +1,63 @@
+@if (isLoading()) {
+  <div class="global-loading-overlay">
+    <span class="global-loading-spinner"></span>
+  </div>
+}
+<header class="app-header">
+  <div class="app-header__brand">UBS Riacho Estado</div>
+
+  @if (isLoggedIn()) {
+  <nav class="app-nav" [class.app-nav--open]="mobileMenuOpen()" (click)="mobileMenuOpen.set(false)">
+    <a routerLink="/visits-calendar" routerLinkActive="active">Agenda</a>
+    <a routerLink="/visits-needed" routerLinkActive="active">Quem precisa ser visitado</a>
+    @if (!isAdmin()) {
+      <a routerLink="/patients" routerLinkActive="active">Meus pacientes</a>
+    }
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+    @if (isAdmin()) {
+      <a routerLink="/settings" routerLinkActive="active">Usuários</a>
+    }
+  </nav>
+
+  @if (mobileMenuOpen()) {
+    <div class="nav-backdrop" (click)="mobileMenuOpen.set(false)"></div>
+  }
+
+  <button
+    type="button"
+    class="menu-toggle"
+    [class.menu-toggle--active]="mobileMenuOpen()"
+    (click)="mobileMenuOpen.set(!mobileMenuOpen())"
+    [attr.aria-expanded]="mobileMenuOpen()"
+    aria-label="Abrir menu"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="user-menu">
+    <button
+      type="button"
+      class="user-avatar"
+      (click)="toggleUserMenu()"
+      [attr.aria-expanded]="userMenuOpen()"
+      aria-label="Menu do usuário"
+    >
+      {{ userInitials() }}
+    </button>
+
+    @if (userMenuOpen()) {
+      <div class="user-menu-backdrop" (click)="closeUserMenu()"></div>
+      <div class="user-menu__dropdown">
+        <div class="user-menu__name">{{ getUserName() }}</div>
+        <button type="button" class="user-menu__item" (click)="onOpenChangePassword()">Alterar senha</button>
+        <button type="button" class="user-menu__item user-menu__item--danger" (click)="onLogout()">Sair</button>
+      </div>
+    }
+  </div>
+  }
+</header>
+<main class="app-content"><router-outlet /></main>
+<app-session-expired-modal />
+<app-change-password-modal [isOpen]="changePasswordOpen()" (closed)="onCloseChangePassword()" />

@@ -1,0 +1,21 @@
+<div class="pagination">
+  <button type="button" (click)="goToFirst()" [disabled]="currentPage === 1">&laquo; Primeira</button>
+  <button type="button" (click)="previousPage()" [disabled]="currentPage === 1">&larr; Anterior</button>
+
+  <span class="pagination-label">
+    Página
+    <input
+      type="number"
+      min="1"
+      [max]="totalPages"
+      [value]="currentPage"
+      (keyup.enter)="onPageInputChange($event)"
+      (blur)="onPageInputChange($event)"
+      class="page-input"
+    />
+    de {{ totalPages }}
+  </span>
+
+  <button type="button" (click)="nextPage()" [disabled]="currentPage === totalPages">Próxima &rarr;</button>
+  <button type="button" (click)="goToLast()" [disabled]="currentPage === totalPages">Última &raquo;</button>
+</div>

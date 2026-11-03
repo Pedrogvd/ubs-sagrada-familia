@@ -1,0 +1,56 @@
+<div class="history-page">
+  <h1>Histórico de visitas</h1>
+
+  @if (patient(); as p) {
+  <p class="patient-name">Paciente: {{ p.name }}</p>
+  }
+
+  @if (visits().length === 0) {
+  <p class="empty-state">Nenhuma visita registrada pra esse paciente ainda.</p>
+  } @else {
+  <div class="visit-list">
+    @for (visit of visits(); track visit.id) {
+    <div class="visit-card">
+      <div class="visit-card__header">
+        <div class="visit-card__info">
+          <p class="visit-date">{{ visit.visitDate | date: 'dd/MM/yyyy HH:mm' }}</p>
+          <p class="visit-professional">Registrada por {{ professionalName(visit.professionalId) }}</p>
+        </div>
+        <span class="badge badge--{{ visit.outcome }}">{{ outcomeLabel(visit.outcome) }}</span>
+      </div>
+
+      @if (visit.outcome === 'completed') {
+      <div class="visit-stats">
+        @if (visit.bloodPressure) {
+        <div class="visit-stat">
+          <span class="visit-stat__label">Pressão arterial</span>
+          <span class="visit-stat__value">{{ visit.bloodPressure }}</span>
+        </div>
+        }
+        @if (visit.weightKg !== null) {
+        <div class="visit-stat">
+          <span class="visit-stat__label">Peso</span>
+          <span class="visit-stat__value">{{ visit.weightKg }} kg</span>
+        </div>
+        }
+        @if (visit.bloodGlucoseMgDl !== null) {
+        <div class="visit-stat">
+          <span class="visit-stat__label">Glicemia</span>
+          <span class="visit-stat__value">{{ visit.bloodGlucoseMgDl }} mg/dL</span>
+        </div>
+        }
+      </div>
+      }
+
+      @if (visit.needsReferral) {
+      <p class="visit-referral">Encaminhado para: {{ visit.referredTo || 'não especificado' }}</p>
+      }
+
+      @if (visit.notes) {
+      <p class="visit-notes">{{ visit.notes }}</p>
+      }
+    </div>
+    }
+  </div>
+  }
+</div>

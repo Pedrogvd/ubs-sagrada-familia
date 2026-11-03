@@ -1,0 +1,175 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: #f4f6f8;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+main.app-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+main.app-content > router-outlet + * {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+// Tabelas viram "lista de cartões" no celular: cada <tr> vira um cartão separado
+// (fundo branco, sombra leve, espaço entre eles), e cada <td> mostra o nome da
+// coluna (via atributo data-label) na frente do valor. Isso vale pra qualquer
+// tabela do site sem precisar duplicar CSS em cada página — só é preciso colocar
+// data-label="..." em cada <td> do template.
+//
+// Duas classes opcionais deixam o cartão mais claro de ler:
+// - "cell-title" na coluna principal (geralmente o Nome): vira o título do
+//   cartão, em destaque, sempre no topo, não importa a ordem das colunas.
+// - "actions" na coluna de ações: vira botões no rodapé do cartão, sempre
+//   por último.
+@media (max-width: 64rem) {
+  table {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody {
+    display: block;
+  }
+
+  tr {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 0.0625rem solid #e2e8f0;
+    border-radius: 0.75rem;
+    box-shadow: 0 0.0625rem 0.1875rem rgba(15, 23, 42, 0.06);
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  td {
+    display: block;
+    padding: 0.35rem 0;
+    border-bottom: none !important;
+    font-size: 0.9rem;
+  }
+
+  td[data-label] {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    text-align: right;
+  }
+
+  td[data-label]::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  // Coluna principal (nome / identificador): vira o título do cartão, em
+  // destaque, sempre no topo — não importa a posição dela no template.
+  td.cell-title {
+    order: -1;
+    display: block;
+    padding: 0 0 0.6rem 0;
+    margin-bottom: 0.4rem;
+    border-bottom: 0.0625rem solid #f1f5f9 !important;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: left;
+  }
+
+  td.cell-title::before {
+    content: none;
+  }
+
+  // Coluna de ações: vira botões no rodapé do cartão, sempre por último.
+  td.actions {
+    order: 999;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.6rem 0 0 0;
+    margin-top: 0.4rem;
+    border-top: 0.0625rem solid #f1f5f9;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  td.actions::before {
+    content: none;
+  }
+
+  td.actions .btn-link {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 0.0625rem solid currentColor;
+    font-weight: 600;
+  }
+
+  // "Editar dados do paciente", "Excluir paciente" (e qualquer outro
+  // link/botão solto fora do grid de ações clínicas) ocupa a linha inteira
+  // do cartão, sozinho.
+  td.actions > .btn-link {
+    flex: 1 1 100%;
+  }
+
+  td.actions .self-note {
+    align-self: center;
+    font-size: 0.8rem;
+    color: #64748b;
+  }
+
+  // no desktop o grupo de ações clínicas (visita/IVCF) é um grid 2x2; no
+  // cartão do celular a gente mantém esse mesmo grid de 2 colunas (em vez de
+  // "soltar" os 4 botões um por linha) pra manter os pares visita+visita e
+  // IVCF+IVCF um do lado do outro, já que a cor de cada um já indica o grupo.
+  td.actions .action-grid {
+    flex: 1 1 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  td.actions .action-grid .btn-link {
+    font-size: 0.78rem;
+    padding: 0.55rem 0.4rem;
+  }
+}

@@ -1,0 +1,83 @@
+<div class="patients-page">
+  <h1>{{ isAdmin() ? 'Pacientes' : 'Meus pacientes' }}</h1>
+  <a routerLink="/patients/new" class="btn-new">+ Novo paciente</a>
+
+  <div class="filters">
+    <input type="text" placeholder="Buscar por nome..." [value]="searchTerm()" (input)="onSearchChange($event)"
+      class="filter-input" />
+
+    <select [value]="priorityFilter()" (change)="onPriorityFilterChange($event)">
+      <option value="all">Todas as prioridades</option>
+      <option value="high">Alta</option>
+      <option value="medium">Média</option>
+      <option value="low">Baixa</option>
+    </select>
+
+    <select [value]="alertFilter()" (change)="onAlertFilterChange($event)">
+      <option value="all">Todos os alertas</option>
+      <option value="critical">Crítico</option>
+      <option value="overdue">Atrasado</option>
+      <option value="upcoming">Em breve</option>
+      <option value="ok">Em dia</option>
+    </select>
+
+    <select [value]="activeFilter()" (change)="onActiveFilterChange($event)">
+      <option value="all">Ativos e inativos</option>
+      <option value="active">Somente ativos</option>
+      <option value="inactive">Somente inativos</option>
+    </select>
+  </div>
+
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Prioridade</th>
+        <th>Alerta</th>
+        <th>Próxima visita</th>
+        <th>Ativo</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (patient of pagedPatients(); track patient.id) {
+      <tr>
+        <td data-label="Nome" class="cell-title">{{ patient.name }}</td>
+        <td data-label="Prioridade"><span class="badge badge--{{ patient.priority }}">{{ priorityLabel(patient.priority) }}</span></td>
+        <td data-label="Alerta">
+          @if (patient.alertLevel) {
+          <span class="badge badge-alert--{{ patient.alertLevel }}">{{ alertLabel(patient.alertLevel) }}</span>
+          }
+        </td>
+        <td data-label="Próxima visita">{{ patient.nextVisitDue ? (patient.nextVisitDue | date:'dd/MM/yyyy') : '-' }}</td>
+        <td data-label="Ativo">{{ patient.active ? 'Sim' : 'Não' }}</td>
+        <td data-label="Ações" class="actions">
+          <a [routerLink]="['/patients/edit', patient.id]" class="btn-link action-chip">Editar dados do paciente</a>
+          <div class="action-grid">
+            <a [routerLink]="['/visits/new', patient.id]" class="btn-link action-chip action-chip--visit">Registrar visita</a>
+            <a [routerLink]="['/visits/history', patient.id]" class="btn-link action-chip action-chip--visit">Histórico de visitas</a>
+            <a [routerLink]="['/ivcf/new', patient.id]" class="btn-link action-chip action-chip--primary">Editar IVCF-20</a>
+            <a [routerLink]="['/ivcf/history', patient.id]" class="btn-link action-chip action-chip--primary">Histórico IVCF</a>
+          </div>
+        </td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="6">
+          @if (patients().length === 0) {
+          Nenhum paciente cadastrado ainda.
+          } @else {
+          Nenhum paciente encontrado com esses filtros.
+          }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  </div>
+
+  @if (filteredPatients().length > 0) {
+  <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()" (pageChange)="currentPage.set($event)" />
+  }
+</div>

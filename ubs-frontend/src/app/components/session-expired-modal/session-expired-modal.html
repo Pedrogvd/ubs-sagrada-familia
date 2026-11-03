@@ -1,0 +1,9 @@
+@if (isOpen()) {
+  <div class="modal-overlay">
+    <div class="modal-box">
+      <h2>Sessão expirada</h2>
+      <p>Sua sessão expirou. Faça login novamente pra continuar.</p>
+      <button (click)="onGoToLogin()">Ir para login</button>
+    </div>
+  </div>
+}

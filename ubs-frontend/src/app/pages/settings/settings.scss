@@ -1,0 +1,422 @@
+.settings-page {
+  width: 100%;
+  max-width: 62.5rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+h1 {
+  font-size: 1.75rem;
+  color: #1a2b3c;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 0.0625rem solid #e2e8f0;
+}
+
+.tabs button {
+  padding: 0.65rem 1.1rem;
+  border: none;
+  background: none;
+  color: #64748b;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 0.1875rem solid transparent;
+  margin-bottom: -0.0625rem;
+}
+
+.tabs button:hover {
+  color: #1a2b3c;
+}
+
+.tabs button.active {
+  color: #0f9d8f;
+  border-bottom-color: #0f9d8f;
+}
+
+.btn-new {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem;
+  background: #0f9d8f;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.btn-new:hover {
+  background: #0c8074;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.filter-input {
+  flex: 1 1 16rem;
+  padding: 0.55rem 0.75rem;
+  border: 0.0625rem solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  background: #f8fafc;
+  color: #1a2b3c;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.filter-input::placeholder {
+  color: #94a3b8;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: #0f9d8f;
+  background: #ffffff;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+@media (max-width: 64rem) {
+  .table-scroll {
+    overflow-x: visible;
+    box-shadow: none;
+  }
+}
+
+thead {
+  background: #1a2b3c;
+}
+
+th {
+  text-align: left;
+  padding: 0.9rem 1.25rem;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+td {
+  padding: 0.9rem 1.25rem;
+  border-bottom: 0.0625rem solid #e2e8f0;
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 62.4375rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge--admin {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.badge--professional {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.badge--active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge--inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.badge--high {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge--medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge--low {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 0.4rem;
+}
+
+.actions button {
+  padding: 0.4rem 0.8rem;
+  border: 0.0625rem solid #cbd5e1;
+  background: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.actions button:hover {
+  background: #f1f5f9;
+}
+
+.btn-danger {
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.btn-danger:hover {
+  background: #fef2f2;
+}
+
+.btn-link {
+  color: #0f9d8f;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+.action-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.65rem;
+  border-radius: 62.4375rem;
+  border: 0.0625rem solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 1.2;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.action-chip:hover {
+  background: #eef2f7;
+  border-color: #94a3b8;
+  color: #1a2b3c;
+}
+
+.action-chip--primary {
+  background: rgba(15, 157, 143, 0.08);
+  border-color: rgba(15, 157, 143, 0.3);
+  color: #0f9d8f;
+}
+
+.action-chip--primary:hover {
+  background: rgba(15, 157, 143, 0.16);
+  border-color: #0f9d8f;
+  color: #0c8074;
+}
+
+.action-chip--visit {
+  background: rgba(3, 105, 161, 0.08);
+  border-color: rgba(3, 105, 161, 0.3);
+  color: #0369a1;
+}
+
+.action-chip--visit:hover {
+  background: rgba(3, 105, 161, 0.16);
+  border-color: #0369a1;
+  color: #025580;
+}
+
+.action-chip--danger {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.3);
+  color: #dc2626;
+}
+
+.action-chip--danger:hover {
+  background: rgba(220, 38, 38, 0.16);
+  border-color: #dc2626;
+  color: #b91c1c;
+}
+
+// as chips de ação até aqui eram só <a> (navegação); "Excluir paciente" é um
+// <button> de verdade (precisa de (click), não de navegação). ".actions
+// button", mais acima, é uma regra legada (hoje sem nenhum uso real — era de
+// uma versão antiga da tela) que ainda bateria nesse botão com especificidade
+// maior que uma classe só, então essas regras repetem o mesmo escopo
+// ".actions button" pra garantir que ganham e o botão fica idêntico às
+// outras chips.
+.actions button.action-chip {
+  font: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0.3rem 0.65rem;
+  border-radius: 62.4375rem;
+  border: 0.0625rem solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.actions button.action-chip--danger {
+  border-color: rgba(220, 38, 38, 0.3);
+  background: rgba(220, 38, 38, 0.08);
+  color: #dc2626;
+}
+
+.actions button.action-chip--danger:hover {
+  background: rgba(220, 38, 38, 0.16);
+  border-color: #dc2626;
+  color: #b91c1c;
+}
+
+
+.self-note {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.error {
+  background: #fdecea;
+  color: #c0392b;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  margin: 0.75rem 0 0 0;
+}
+
+// Modal de confirmação de exclusão de paciente — mesmo padrão visual dos
+// outros modais do app (session-expired-modal, change-password-modal).
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  max-width: 25rem;
+  width: 100%;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
+}
+
+.modal-box h2 {
+  font-size: 1.25rem;
+  color: #1a2b3c;
+  margin: 0 0 0.75rem;
+}
+
+.modal-box p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+
+.modal-box .error {
+  margin: 0 0 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.modal-actions button {
+  padding: 0.65rem 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.modal-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.modal-actions .btn-cancel {
+  background: transparent;
+  color: #64748b;
+  border: 0.0625rem solid #cbd5e1;
+}
+
+.modal-actions .btn-cancel:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.modal-actions .btn-danger-solid {
+  background: #dc2626;
+  color: white;
+}
+
+.modal-actions .btn-danger-solid:hover:not(:disabled) {
+  background: #b91c1c;
+}
