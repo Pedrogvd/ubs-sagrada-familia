@@ -21,7 +21,6 @@ const PORT = process.env.PORT || 3000;
 const ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "http://2.29.135.208:4200",
-    "https://ubs-riacho-estado.pages.dev",
 ];
 
 app.use(cors({ origin: ALLOWED_ORIGINS }));
