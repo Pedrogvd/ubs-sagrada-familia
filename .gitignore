@@ -10,8 +10,8 @@ dist/
 .env.*.local
 
 # Scripts de seed (contêm dados reais de pessoas — nome, CPF — nunca commitar)
-seed*.js
-seed*.ts
+seedHealthProfessionals.js
+seedHealthProfessionals.ts
 
 # Logs
 npm-debug.log*
