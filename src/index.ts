@@ -21,6 +21,8 @@ const PORT = process.env.PORT || 3000;
 const ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "http://2.29.135.208:4200",
+    "http://ubs-sagrada-familia.duckdns.org",
+    "https://ubs-sagrada-familia.duckdns.org",
 ];
 
 app.use(cors({ origin: ALLOWED_ORIGINS }));
