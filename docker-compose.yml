@@ -2,6 +2,7 @@ services:
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
     container_name: es01
+    restart: unless-stopped
     environment:
       - node.name=es01
       - cluster.name=ubs-sagrada-cluster
@@ -19,6 +20,7 @@ services:
   es02:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
     container_name: es02
+    restart: unless-stopped
     environment:
       - node.name=es02
       - cluster.name=ubs-sagrada-cluster
@@ -36,6 +38,7 @@ services:
   es03:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
     container_name: es03
+    restart: unless-stopped
     environment:
       - node.name=es03
       - cluster.name=ubs-sagrada-cluster
@@ -53,6 +56,7 @@ services:
   backend:
     build: .
     container_name: backend
+    restart: unless-stopped
     env_file: .env
     environment:
       - ES_URL=http://es01:9200
@@ -70,6 +74,7 @@ services:
     build:
       context: ./ubs-frontend
     container_name: frontend
+    restart: unless-stopped
     ports:
       - "4200:80"
     depends_on:
