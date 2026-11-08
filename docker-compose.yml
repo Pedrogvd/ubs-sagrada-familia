@@ -61,6 +61,8 @@ services:
     environment:
       - ES_URL=http://es01:9200
       - PORT=3000
+    volumes:
+      - backend_logs:/app/logs
     depends_on:
       - es01
       - es02
@@ -95,10 +97,49 @@ services:
     networks:
       - ubs-elastic
 
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.15.0
+    container_name: kibana
+    restart: unless-stopped
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es01:9200
+      - XPACK_SECURITY_ENABLED=false
+      - NODE_OPTIONS=--max-old-space-size=384
+    ports:
+      # só acessivel de dentro do proprio servidor (via tunel SSH) -- nunca exposto pra internet
+      - "127.0.0.1:5601:5601"
+    depends_on:
+      - es01
+      - es02
+      - es03
+    networks:
+      - ubs-elastic
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.15.0
+    container_name: logstash
+    restart: unless-stopped
+    environment:
+      - LS_JAVA_OPTS=-Xms256m -Xmx256m
+      - XPACK_MONITORING_ENABLED=false
+    volumes:
+      - backend_logs:/usr/share/logstash/backend-logs:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - logstash_data:/usr/share/logstash/data
+    depends_on:
+      - es01
+      - es02
+      - es03
+      - backend
+    networks:
+      - ubs-elastic
+
 volumes:
   es01data:
   es02data:
   es03data:
+  backend_logs:
+  logstash_data:
 
 networks:
   ubs-elastic:
