@@ -111,7 +111,7 @@ export async function listIvcfAssessmentsByPatient(patientId: string): Promise<I
     const hits = await searchAll(
         INDICES.ivcfAssessments,
         { term: { patientId } },
-        [{ assessedAt: { order: "desc" } }, { _id: "desc" }]
+        [{ assessedAt: { order: "desc" } }]
     );
 
     return hits.map((hit: any) => hit._source as IvcfAssessment);

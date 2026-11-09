@@ -52,7 +52,7 @@ export async function listVisits(scopeToProfessionalId?: string): Promise<Visit[
     const hits = await searchAll(
         INDICES.visits,
         { match_all: {} },
-        [{ visitDate: { order: "desc" } }, { _id: "desc" }]
+        [{ visitDate: { order: "desc" } }]
     );
 
     const visits = hits.map((hit: any) => hit._source as Visit);
