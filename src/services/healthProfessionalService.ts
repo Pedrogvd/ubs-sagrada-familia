@@ -1,4 +1,4 @@
-import { esClient, INDICES } from "./esClient";
+import { esClient, INDICES, searchAll } from "./esClient";
 import { CreateHealthProfessionalInput, HealthProfessional } from "../types";
 import { JWT_SECRET } from "../config/jwt";
 import bcrypt from "bcrypt";
@@ -100,15 +100,9 @@ export async function loginHealthProfessional(email: string, password: string): 
 }
 
 export async function listHealthProfessionals(): Promise<Omit<HealthProfessional, "passwordHash">[]> {
-    const result = await esClient.search({
-        index: INDICES.healthProfessionals,
-        body: {
-            query: { match_all: {} },
-            size: 200
-        }
-    });
+    const hits = await searchAll(INDICES.healthProfessionals, { match_all: {} }, ["_doc"]);
 
-    return result.body.hits.hits.map((hit: any) => toSafeProfessional(hit._source as HealthProfessional));
+    return hits.map((hit: any) => toSafeProfessional(hit._source as HealthProfessional));
 }
 
 export async function getHealthProfessionalById(id: string): Promise<Omit<HealthProfessional, "passwordHash"> | null> {

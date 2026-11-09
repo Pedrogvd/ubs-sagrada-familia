@@ -1,4 +1,4 @@
-import { esClient, INDICES } from "./esClient";
+import { esClient, INDICES, searchAll } from "./esClient";
 import { AlertLevel, CreatePatientInput, Patient, PatientWithAlert } from "../types";
 
 export const VALID_CONDITIONS = [
@@ -71,17 +71,11 @@ export function calculateAlertLevel(patient: Patient, now: Date = new Date()): A
 // scopeToProfessionalId: quando informado, só retorna pacientes cujo ACS
 // responsável é esse profissional (usado pra quem não é admin)
 export async function listPatients(scopeToProfessionalId?: string): Promise<PatientWithAlert[]> {
-    const result = await esClient.search({
-        index: INDICES.patients,
-        body: {
-            query: { match_all: {} },
-            size: 200
-        }
-    });
+    const hits = await searchAll(INDICES.patients, { match_all: {} }, ["_doc"]);
 
     const now = new Date();
 
-    const patients = result.body.hits.hits.map((hit: any) => {
+    const patients = hits.map((hit: any) => {
         const patient = hit._source as Patient;
         return { ...patient, alertLevel: calculateAlertLevel(patient, now) };
     });

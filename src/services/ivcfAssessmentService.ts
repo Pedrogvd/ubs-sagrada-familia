@@ -1,4 +1,4 @@
-import { esClient, INDICES } from "./esClient";
+import { esClient, INDICES, searchAll } from "./esClient";
 import { CreateIvcfAssessmentInput, IvcfAnswers, IvcfAssessment, IvcfClassification, IvcfScoreBreakdown } from "../types";
 
 // Calcula a pontuação do IVCF-20 a partir das respostas (pontuação máxima: 40).
@@ -108,16 +108,13 @@ export async function createIvcfAssessment(
 // primeiro — a "versão atual" do documento do paciente é sempre o primeiro
 // item dessa lista
 export async function listIvcfAssessmentsByPatient(patientId: string): Promise<IvcfAssessment[]> {
-    const result = await esClient.search({
-        index: INDICES.ivcfAssessments,
-        body: {
-            query: { term: { patientId } },
-            sort: [{ assessedAt: { order: "desc" } }],
-            size: 200,
-        },
-    });
+    const hits = await searchAll(
+        INDICES.ivcfAssessments,
+        { term: { patientId } },
+        [{ assessedAt: { order: "desc" } }, { _id: "desc" }]
+    );
 
-    return result.body.hits.hits.map((hit: any) => hit._source as IvcfAssessment);
+    return hits.map((hit: any) => hit._source as IvcfAssessment);
 }
 
 // apaga todas as avaliações IVCF-20 de um paciente — usado quando o

@@ -1,4 +1,4 @@
-import { esClient, INDICES } from "./esClient";
+import { esClient, INDICES, searchAll } from "./esClient";
 import { CreateVisitInput, Visit } from "../types";
 import { updatePatientAfterVisit, listPatients } from "./patientService";
 
@@ -49,16 +49,13 @@ export async function deleteVisitsByPatient(patientId: string): Promise<void> {
 }
 
 export async function listVisits(scopeToProfessionalId?: string): Promise<Visit[]> {
-    const result = await esClient.search({
-        index: INDICES.visits,
-        body: {
-            query: { match_all: {} },
-            sort: [{ visitDate: { order: "desc" } }],
-            size: 500,
-        }
-    });
+    const hits = await searchAll(
+        INDICES.visits,
+        { match_all: {} },
+        [{ visitDate: { order: "desc" } }, { _id: "desc" }]
+    );
 
-    const visits = result.body.hits.hits.map((hit: any) => hit._source as Visit);
+    const visits = hits.map((hit: any) => hit._source as Visit);
 
     if (!scopeToProfessionalId) {
         return visits;
